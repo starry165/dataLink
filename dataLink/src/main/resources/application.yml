@@ -1,0 +1,42 @@
+server:
+  port: 8082
+spring:
+  application:
+    name: DataLink
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/dataLink
+    username: root
+    password: root
+  kafka:
+    bootstrap-servers: http://172.23.218.245:9092
+    consumer:
+      group-id: chunJun-group
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+logging:
+  level:
+    org:
+      example:
+        dataLink:
+          mapper: debug
+  config: classpath:logback.xml
+xxl:
+  job:
+    admin:
+      addresses: http://127.0.0.1:8080/xxl-job-admin
+      accessToken: default_token
+      timeout: 3
+      userName: admin
+      passWord: 123456
+    executor:
+      appName: dataLink
+      port: 9999
+      logPath: /data/appLogs/xxl-job/jobHandler
+      logRetentionDays: 30
+
+
