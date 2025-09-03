@@ -1,0 +1,32 @@
+{
+  "name": "kafka-connector",
+  "config": {
+    "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
+    "tasks.max": "1",
+    "topics": "dbserver2.test.base",
+    "connection.url": "jdbc:mysql://localhost:3306/test",
+    "connection.user": "root",
+    "connection.password": "root",
+    "table.name.format": "base_sync",
+    "auto.create": true,
+    "auto.evolve": false,
+    "insert.mode": "upsert",
+    "pk.mode": "record_key",
+    "pk.fields": "id",
+    "delete.enabled": true,
+
+    "key.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "key.converter.schemas.enable": "true",
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "value.converter.schemas.enable": "true",
+
+    "transforms": "unwrap,setKey,filterFields",
+    "transforms.unwrap.type": "io.debezium.transforms.ExtractNewRecordState",
+    "transforms.unwrap.drop.tombstones": "false",
+    "transforms.unwrap.delete.handling.mode": "rewrite",
+    "transforms.setKey.type": "org.apache.kafka.connect.transforms.ValueToKey",
+    "transforms.setKey.fields": "id",
+    "transforms.filterFields.type": "org.apache.kafka.connect.transforms.ReplaceField$Value",
+    "transforms.filterFields.whitelist": "id,name"
+  }
+}
